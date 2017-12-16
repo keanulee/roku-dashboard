@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<component name="WeatherReader" extends="Task">
+ 
+  <interface>
+    <field id="contenturi" type="uri" />
+    <field id="text" type="string" />
+  </interface> 
+
+  <script type="text/brightscript">
+
+    <![CDATA[
+
+    sub init()
+      m.top.functionName = "getcontent"
+    end sub
+
+    sub getcontent()
+      readInternet = createObject("roUrlTransfer")
+      readInternet.setUrl(m.top.contenturi)
+      contentxml = createObject("roXMLElement")
+      contentxml.parse(readInternet.GetToString())
+
+      if contentxml.getName()="query"
+        results = contentxml.getNamedElements("results")
+        channel = results.getNamedElements("channel")
+        item = channel.getNamedElements("item")
+        condition = item.getNamedElements("yweather:condition").getHead().getAttributes()
+        forecast = item.getNamedElements("yweather:forecast").getHead().getAttributes()
+        m.top.text = condition["temp"] + "°C " + condition["text"] + "  |  " + forecast["text"] + " " + forecast["high"] + " / " + forecast["low"]
+      end if
+    end sub
+
+    ]]>
+
+  </script>
+
+</component>

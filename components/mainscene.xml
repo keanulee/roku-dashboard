@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="MainScene" extends="OverhangPanelSetScene">
+
+  <script type="text/brightscript">
+
+    <![CDATA[
+
+    sub init()
+      m.top.backgroundColor="0x000000FF"
+      m.top.backgroundUri = ""
+      m.top.setFocus(true)
+      setVideo()
+
+      m.label = m.top.findNode("label")
+      m.labellist = m.top.findNode("labelList")
+      m.scrollinglabel = m.top.findNode("scrollingLabel")
+      m.timer = m.top.findNode("timer")
+      m.timer.control = "start"
+      m.timer.ObserveField("fire", "fetchNextBus")
+      fetchNextBus()
+      fetchWeather()
+    end sub
+
+    sub fetchNextBus()
+      m.nextBusReaderTask = createObject("RoSGNode", "NextBusReader")
+      m.nextBusReaderTask.observeField("content", "showNextBus")
+      m.nextBusReaderTask.observeField("messages", "showNextBusMessages")
+      m.nextBusReaderTask.contenturi = "http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=sf-muni&r=L&stopId=16627"
+      m.nextBusReaderTask.control = "RUN"
+    end sub
+
+    sub showNextBus()
+      m.labellist.content = m.nextBusReaderTask.content
+    end sub
+
+    sub showNextBusMessages()
+      m.scrollinglabel.text = m.nextBusReaderTask.messages
+    end sub
+
+    sub fetchWeather()
+      m.weatherReaderTask = createObject("RoSGNode", "WeatherReader")
+      m.weatherReaderTask.observeField("text", "showWeather")
+      m.weatherReaderTask.contenturi = "http://query.yahooapis.com/v1/public/yql?q=select%20item%20from%20weather.forecast%20where%20woeid%3D12797166%20and%20u%3D'c'&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+      m.weatherReaderTask.control = "RUN"
+    end sub
+
+    sub showWeather()
+      m.top.overhang.title = m.weatherReaderTask.text
+    end sub
+    
+    function setVideo() as void
+      videocontent = createObject("RoSGNode", "ContentNode")
+      videocontent.title = "News"
+      videocontent.streamformat = "hls"
+      videocontent.url = "http://dcs-live.apis.anvato.net/server/play/10r3b2gtagOkUyAg/1926000/prog.m3u8?x=1440&anv_user=4bec7e4fb05e976c0ab25c102bc4c8e913749&fw_ltlg=&fw_sdk_flag=%2Bslcb%2Bvicb&fw_metr=7&_dev=web&fw_did=4bec7e4fb05e976c0ab25c102bc4c8e913749&fw_sdk_flag_safe=%252Bslcb%252Bvicb&rdid=unknown&is_lat=1&_tkx_anvack=anvato_epfox_app_web_prod_b3373168e12f423f41504f207000188daf88251b&_tkx_callsign=c100014&t=1512542881&X-Anvato-Adst-Auth=JjjA6F1t16cBewuS3ekCXrcYO95zfYVBWSn%2Fi5zvMZrtkf4fgVtQa2Si3DKRTIWu&_shost=176816146&_fp=77d6f8ab79ceffaf86d28dff7d3619bc&anvsid=i176816146-nc01cc642-75ad-4309-8ec4-f759e6dccd24&anv=1512542918648&X-Anvato-Adst-Auth=wV992aEkou+d7U97mqw7/tQUPYZNOpdllidHqijbTXYrN3lrMhsuCCzwf5n1G4Li"
+
+      video = m.top.findNode("video")
+      video.content = videocontent
+      video.control = "play"
+      video.setFocus(true)
+    end function
+
+    ]]>
+
+  </script>
+
+  <children>
+ 
+    <Video
+      id="video"
+      width="1000"
+      height="600"
+      translation="[0, 115]" />
+
+    <LabelList
+      id="labelList"
+      drawFocusFeedback="false"
+      sectionDividerMinWidth="0"
+      translation="[1010, 115]"
+      itemSize="[270, 60]" />
+    
+    <ScrollingLabel
+      id="scrollingLabel"
+      maxwidth="270"
+      height="60"
+      translation="[1010, 660]"
+      text="No messages" />
+
+    <Timer
+      id="timer"
+      repeat="true"
+      duration="30" />
+
+  </children>
+
+</component>

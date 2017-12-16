@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<component name="NextBusReader" extends="Task">
+ 
+  <interface>
+    <field id="contenturi" type="uri" />
+    <field id="content" type="node" />
+    <field id="messages" type="string" />
+  </interface> 
+
+  <script type="text/brightscript">
+
+    <![CDATA[
+
+    sub init()
+      m.top.functionName = "getcontent"
+    end sub
+
+    sub getcontent()
+      readInternet = createObject("roUrlTransfer")
+      readInternet.setUrl(m.top.contenturi)
+      contentxml = createObject("roXMLElement")
+      contentxml.parse(readInternet.GetToString())
+      content = createObject("roSGNode", "ContentNode")
+
+      if contentxml.getName()="body"
+        for each predictions in contentxml.GetNamedElements("predictions")
+          section = content.createChild("ContentNode")
+          section.contenttype = "SECTION"
+          item = section.createChild("ContentNode")
+          item.title = predictions.getAttributes()["routeTitle"]
+          for each direction in predictions.GetNamedElements("direction")
+            section = content.createChild("ContentNode")
+            section.contenttype = "SECTION"
+            section.title = mid(direction.getAttributes()["title"], 12)
+            str = ""
+            for each prediction in direction.GetNamedElements("prediction")
+              str = str + ", " + prediction.getAttributes()["minutes"]
+            end for
+            item = section.createChild("ContentNode")
+            item.title = mid(str, 3)
+          end for
+
+          ' section = content.createChild("ContentNode")
+          ' section.contenttype = "SECTION"
+          str = ""
+          for each message in predictions.GetNamedElements("message")
+            ' item = section.createChild("ContentNode")
+            ' item.title = message.getAttributes()["text"]
+            str = str + "  |  " + message.getAttributes()["text"]
+          end for
+          m.top.messages = mid(str, 6)
+        end for
+      end if
+
+      m.top.content = content
+    end sub
+
+    ]]>
+
+  </script>
+
+</component>
