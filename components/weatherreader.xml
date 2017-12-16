@@ -27,7 +27,7 @@
         item = channel.getNamedElements("item")
         condition = item.getNamedElements("yweather:condition").getHead().getAttributes()
         forecast = item.getNamedElements("yweather:forecast").getHead().getAttributes()
-        m.top.text = condition["temp"] + "°C " + condition["text"] + "  |  " + forecast["text"] + " " + forecast["high"] + " / " + forecast["low"]
+        m.top.text = condition["temp"] + "°C " + condition["text"] + "  •  " + forecast["text"] + " " + forecast["high"] + "° / " + forecast["low"] + "°"
       end if
     end sub
 

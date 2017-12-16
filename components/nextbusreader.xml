@@ -47,7 +47,7 @@
           for each message in predictions.GetNamedElements("message")
             ' item = section.createChild("ContentNode")
             ' item.title = message.getAttributes()["text"]
-            str = str + "  |  " + message.getAttributes()["text"]
+            str = str + "  •  " + message.getAttributes()["text"]
           end for
           m.top.messages = mid(str, 6)
         end for
