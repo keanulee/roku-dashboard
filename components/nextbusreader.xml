@@ -3,7 +3,6 @@
 <component name="NextBusReader" extends="Task">
  
   <interface>
-    <field id="contenturi" type="uri" />
     <field id="content" type="node" />
     <field id="messages" type="string" />
   </interface> 
@@ -18,7 +17,7 @@
 
     sub getcontent()
       readInternet = createObject("roUrlTransfer")
-      readInternet.setUrl(m.top.contenturi)
+      readInternet.setUrl("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=sf-muni&r=L&stopId=16627")
       contentxml = createObject("roXMLElement")
       contentxml.parse(readInternet.GetToString())
       content = createObject("roSGNode", "ContentNode")
@@ -33,23 +32,19 @@
             section = content.createChild("ContentNode")
             section.contenttype = "SECTION"
             section.title = mid(direction.getAttributes()["title"], 12)
-            str = ""
+            times = []
             for each prediction in direction.GetNamedElements("prediction")
-              str = str + ", " + prediction.getAttributes()["minutes"]
+              times.push(prediction.getAttributes()["minutes"])
             end for
             item = section.createChild("ContentNode")
-            item.title = mid(str, 3)
+            item.title = times.join(", ")
           end for
 
-          ' section = content.createChild("ContentNode")
-          ' section.contenttype = "SECTION"
-          str = ""
+          messages = []
           for each message in predictions.GetNamedElements("message")
-            ' item = section.createChild("ContentNode")
-            ' item.title = message.getAttributes()["text"]
-            str = str + "  •  " + message.getAttributes()["text"]
+            messages.push(message.getAttributes()["text"])
           end for
-          m.top.messages = mid(str, 6)
+          m.top.messages = messages.join("  •  ").replace(chr(10), " ")
         end for
       end if
 
