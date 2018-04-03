@@ -51,7 +51,7 @@
       videocontent = createObject("RoSGNode", "ContentNode")
       videocontent.title = "News"
       videocontent.streamformat = "hls"
-      videocontent.url = "http://dcs-live.apis.anvato.net/server/play/10r3b2gtagOkUyAg/1926000/prog.m3u8?x=2687&anv_user=f91eaa7200262df28ebeb01ac8fc92af11789&fw_ltlg=&fw_sdk_flag=%2Bslcb%2Bvicb&fw_metr=7&_dev=web&fw_did=f91eaa7200262df28ebeb01ac8fc92af11789&fw_sdk_flag_safe=%252Bslcb%252Bvicb&rdid=unknown&is_lat=1&_tkx_anvack=anvato_epfox_app_web_prod_b3373168e12f423f41504f207000188daf88251b&_tkx_callsign=c100014&t=1517544993&X-Anvato-Adst-Auth=Q4jTHkEALUeqDkk6YGaVSdqut0XrZa3zCt2H4jTr%2FSIiZBKUqfb5VeWxYzVxFsQ+&_shost=176816137&_fp=95ae21022a839729ad43518c2635ab20&anvsid=i176816137-nd6968987-1c4e-4fac-959c-971f33e01b90&anv=1517545017615&X-Anvato-Adst-Auth=CE4iQufsPtpbFzEmjf9Q51Rv/skwicfMj4r4PIOa6rtXplWXLwGQoRCkY0lo1sdu"
+      videocontent.url = "http://dcs-live.apis.anvato.net/server/play/10r3b2gtagOkUyAg/1926000/prog.m3u8?x=8825&fw_mvpd=d41d8cd98f00b204e9800998ecf8427e&fw_csid=&fw_caid=&anv_user=b5e1218bed4dc479146f54bd6206b6f731903&fw_prof=&fw_network=&fw_ltlg=&fw_mvpd_id=&fw_sdk_flag=%2Bslcb%2Bvicb&fw_metr=7&_dev=web&fw_did=40ABF359-1C59-4C52-9E7D-288A5969E899&fw_sdk_flag_safe=%252Bslcb%252Bvicb&id=40ABF359-1C59-4C52-9E7D-288A5969E899&rdid=40ABF359-1C59-4C52-9E7D-288A5969E899&is_lat=0&_tkx_anvack=anvato_epfox_app_web_prod_b3373168e12f423f41504f207000188daf88251b&_tkx_callsign=adstajo9vmxqGgkD&t=1522731689&_shost=176820210&_fp=31fd4ee8296fcb58c4e9505bfec67bfb&anvsid=i176820210-n98370b67-08eb-4d82-a442-90150561a0dc"
 
       video = m.top.findNode("video")
       video.content = videocontent
